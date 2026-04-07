@@ -1,0 +1,616 @@
+/* ============================================================
+   PORTFOLIO STYLESHEET
+   Structure:
+   1. CSS Variables (colors, fonts, spacing)
+   2. Reset & Base Styles
+   3. Navigation
+   4. Hero Section
+   5. Shared Section Styles
+   6. Projects Grid
+   7. Skills Section
+   8. Contact Section
+   9. Footer
+   10. Responsive (mobile-friendly breakpoints)
+   ============================================================ */
+
+
+/* ============================================================
+   1. CSS VARIABLES
+   Define your colors and fonts here once so you can reuse them
+   everywhere. Change a value here and it updates across the site.
+   ============================================================ */
+:root {
+  /* Color palette */
+  --color-bg:        #0f1117;   /* main dark background */
+  --color-bg-alt:    #161b27;   /* slightly lighter dark (for alternating sections) */
+  --color-surface:   #1e2535;   /* card / panel background */
+  --color-border:    #2a3347;   /* subtle border color */
+  --color-accent:    #6c8fff;   /* primary accent — blue-purple */
+  --color-accent-hover: #8aa4ff;
+  --color-text:      #e2e8f0;   /* main body text */
+  --color-muted:     #8892a4;   /* secondary / helper text */
+
+  /* Typography */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Spacing scale */
+  --section-padding: 80px 0;
+  --container-max:   900px;
+
+  /* Transitions */
+  --transition: 0.2s ease;
+}
+
+
+/* ============================================================
+   2. RESET & BASE STYLES
+   Remove browser default inconsistencies and set a baseline.
+   ============================================================ */
+
+/* Box-sizing: border-box makes width/height calculations intuitive */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Smooth scrolling when clicking nav links */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* Remove default list bullets */
+ul {
+  list-style: none;
+}
+
+/* Make links inherit color by default */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Images never overflow their containers */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+/* ============================================================
+   3. NAVIGATION
+   Fixed bar at the top so visitors can always jump to a section.
+   ============================================================ */
+.navbar {
+  position: fixed;           /* stays at top as you scroll */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;              /* sits above all other content */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 5vw, 60px);  /* responsive side padding */
+  height: 64px;
+  background-color: rgba(15, 17, 23, 0.85); /* semi-transparent */
+  backdrop-filter: blur(12px);             /* frosted-glass effect */
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-logo {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-links a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  transition: color var(--transition);
+}
+
+.nav-links a:hover {
+  color: var(--color-text);
+}
+
+/* Hamburger button — hidden on desktop, shown on mobile */
+.nav-toggle {
+  display: none;          /* hidden by default; media query shows it */
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* The three lines of the hamburger icon */
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: var(--color-text);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animate the 3 lines into an X when the menu is open */
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+/* ============================================================
+   4. HERO SECTION
+   Full-screen opening section with two columns: text + photo.
+   ============================================================ */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px clamp(20px, 5vw, 60px) 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Soft background glow that sits behind the photo */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  right: -5%;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108, 143, 255, 0.07) 0%, transparent 70%);
+  pointer-events: none; /* doesn't block clicks */
+}
+
+/* The two-column row that holds text + photo */
+.hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  max-width: var(--container-max);
+  width: 100%;
+}
+
+.hero-content {
+  flex: 1; /* takes up all remaining space next to the photo */
+}
+
+/* ---- Profile photo ---- */
+.hero-photo {
+  flex-shrink: 0; /* never shrink below its natural size */
+}
+
+/* The circle — works as a placeholder (with initials) or a real <img> */
+.hero-avatar {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 2px solid var(--color-accent);
+  background: linear-gradient(135deg, #1e2535 0%, #161b27 100%);
+  box-shadow: 0 0 0 8px rgba(108, 143, 255, 0.08),
+              0 0 60px rgba(108, 143, 255, 0.15);
+  /* Centers the initials text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  /* Crop the image to fill the circle, focused on the top (face area) */
+  object-fit: cover;
+  object-position: center 65%;
+}
+
+.hero-greeting {
+  font-size: 1.1rem;
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.hero-name {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 7vw, 4rem);  /* scales with viewport width */
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-weight: 600;
+  color: var(--color-muted);
+  margin-bottom: 20px;
+}
+
+.hero-tagline {
+  font-size: 1.05rem;
+  color: var(--color-muted);
+  max-width: 500px;
+  margin-bottom: 36px;
+}
+
+/* Button group in the hero */
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;   /* wraps on small screens */
+}
+
+/* Base button styles */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background-color var(--transition), color var(--transition),
+              border-color var(--transition), transform var(--transition);
+}
+
+/* Filled / primary button */
+.btn-primary {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-2px);
+}
+
+/* Outlined / secondary button */
+.btn-outline {
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-outline:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   5. SHARED SECTION STYLES
+   Reusable classes for every section after the hero.
+   ============================================================ */
+
+/* Add top padding so sections don't hide under the fixed navbar */
+.section {
+  padding: var(--section-padding);
+  scroll-margin-top: 64px;  /* offset scroll position by navbar height */
+}
+
+/* Alternating background to break up the page visually */
+.section-alt {
+  background-color: var(--color-bg-alt);
+}
+
+/* Centers content and limits max width */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 40px);
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  color: var(--color-muted);
+  margin-bottom: 48px;
+  font-size: 1rem;
+}
+
+
+/* ============================================================
+   6. PROJECTS GRID
+   3-column grid that collapses to 1 column on mobile.
+   ============================================================ */
+.projects-grid {
+  display: grid;
+  /* auto-fill: create as many columns as fit; min 260px, max grows equally */
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+/* Each project card */
+.project-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* Smooth hover lift effect */
+  transition: transform var(--transition), border-color var(--transition),
+              box-shadow var(--transition);
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 32px rgba(108, 143, 255, 0.1);
+}
+
+/* Top row: title + GitHub icon */
+.project-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.project-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* GitHub icon link in the corner */
+.project-link {
+  color: var(--color-muted);
+  flex-shrink: 0;
+  transition: color var(--transition);
+}
+
+.project-link:hover {
+  color: var(--color-accent);
+}
+
+.project-description {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  flex-grow: 1;   /* pushes tags to the bottom of the card */
+}
+
+/* Tech stack tag row */
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background-color: rgba(108, 143, 255, 0.12);
+  color: var(--color-accent);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 99px;  /* pill shape */
+}
+
+
+/* ============================================================
+   7. SKILLS SECTION
+   Two-column list of languages and tools.
+   ============================================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 32px;
+}
+
+.skills-group-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+/* Small colored dot before each skill */
+.skill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   8. CONTACT SECTION
+   Centered text with two clickable contact cards.
+   ============================================================ */
+.contact-container {
+  text-align: center;
+}
+
+.contact-blurb {
+  color: var(--color-muted);
+  max-width: 520px;
+  margin: 0 auto 48px;
+  font-size: 1rem;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Each contact option (email, GitHub) */
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px 32px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: border-color var(--transition), color var(--transition),
+              transform var(--transition);
+}
+
+.contact-card:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-3px);
+}
+
+
+/* ============================================================
+   SCROLL FADE-IN ANIMATION
+   Elements start invisible and slightly below their resting position.
+   JavaScript adds the "visible" class when they scroll into view,
+   triggering the transition to full opacity and normal position.
+   ============================================================ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   9. FOOTER
+   Simple one-line footer at the bottom.
+   ============================================================ */
+.footer {
+  padding: 32px 20px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-border);
+}
+
+
+/* ============================================================
+   10. RESPONSIVE / MOBILE STYLES
+   Media queries adjust layout for smaller screens.
+   @media (max-width: X) means "apply these rules when screen
+   width is X pixels or less."
+   ============================================================ */
+
+/* Tablet — collapse hero to single column before it gets too cramped */
+@media (max-width: 768px) {
+  .hero-inner {
+    flex-direction: column-reverse; /* photo on top, text below */
+    text-align: center;
+    gap: 40px;
+  }
+
+  .hero-avatar {
+    width: 180px;
+    height: 180px;
+    font-size: 2rem;
+  }
+
+  .hero-tagline {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+}
+
+/* Mobile and below */
+@media (max-width: 640px) {
+
+  /* Show the hamburger button on mobile */
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* Hide nav links by default; they drop down when .open is added */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background-color: rgba(15, 17, 23, 0.97);
+    border-bottom: 1px solid var(--color-border);
+    padding: 8px 0 16px;
+  }
+
+  /* JavaScript adds this class to show the menu */
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links li {
+    padding: 12px clamp(20px, 5vw, 60px);
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+  }
+
+  /* Stack hero buttons vertically */
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Contact cards stack vertically */
+  .contact-card {
+    width: 100%;
+    justify-content: center;
+  }
+}
