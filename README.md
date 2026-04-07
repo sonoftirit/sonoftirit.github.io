@@ -4,7 +4,7 @@ Personal portfolio website built with HTML, CSS, and JavaScript — no framework
 
 ## Live Site
 
-[mustafatiritoglu.github.io](https://mustafatiritoglu.github.io)
+[sonoftirit.github.io](https://sonoftirit.github.io)
 
 ## About
 
